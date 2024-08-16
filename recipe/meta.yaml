@@ -6,30 +6,37 @@ package:
   version: {{ version }}
 
 source:
-  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
+  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/json-merge-patch-{{ version }}.tar.gz
   sha256: 09898b6d427c08754e2a97c709cf2dfd7e28bd10c5683a538914975eab778d39
 
 build:
   noarch: python
-  number: 0
-  script: "{{ PYTHON }} -m pip install . --no-deps --ignore-installed --verbose"
+  script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+  number: 1
 
 requirements:
   host:
-    - python
+    - python >=3.7
     - pip
+    - setuptools
   run:
-    - python
+    - python >=3.7
 
 test:
   imports:
+    - json_merge_patch
     - json_merge_patch.cli
+  commands:
+    - pip check
+  requires:
+    - pip
 
 about:
   home: https://github.com/OpenDataServices/json-merge-patch
-  license: Apache 2.0
-  summary: 'json-merge-patch library provides functions to merge json in accordance with https://tools.ietf.org/html/rfc7386'
-
+  summary: JSON Merge Patch library (https://tools.ietf.org/html/rfc7386)
+  license: BSD-3-Clause
+  license_family: BSD
+  license_file: LICENSE
   description: |
     json-merge-patch library provides functions to merge json in
     accordance with https://tools.ietf.org/html/rfc7386
@@ -39,3 +46,4 @@ about:
 extra:
   recipe-maintainers:
     - BrentDorsey
+    - xylar
